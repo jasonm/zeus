@@ -159,7 +159,19 @@ func (s *SlaveNode) doUnbootedState(monitor *SlaveMonitor) string { // -> {sBoot
 		parts := strings.Split(monitor.tree.ExecCommand, " ")
 		cmd := exec.Command(parts[0], parts[1:]...)
 		file := monitor.remoteMasterFile
-		cmd.Env = append(os.Environ(), fmt.Sprintf("ZEUS_MASTER_FD=%d", file.Fd()))
+		/*cmd.Env = append(os.Environ(), fmt.Sprintf("ZEUS_MASTER_FD=%d", file.Fd()))*/
+		/*cmd.Env = append(cmd.Env, "B=b")*/
+		/*cmd.Env = append(cmd.Env, "X=x")*/
+
+		if _, err := os.Stat("./conf/app.ini"); err == nil {
+			// content, err := ioutil.ReadFile(".env")
+			// if err != nil {
+			//   print("there was an error reading .env")
+			//   //Do something
+			// }
+			// lines := strings.Split(string(content), "\n")
+		}
+
 		cmd.ExtraFiles = []*os.File{file}
 		go babysitRootProcess(cmd)
 		s.L.Unlock()
